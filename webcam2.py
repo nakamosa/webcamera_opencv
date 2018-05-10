@@ -20,7 +20,7 @@ def capture_camera(mirror=True, size=None):
         s = hsv[:, :, 1]
         mask = np.zeros(h.shape, dtype=np.uint8)
 #        mask[((h < 20) | (h > 200)) & (s > 128)] = 255
-        mask[((h < 10) | (h > 359)) & (s > 228)] = 255
+        mask[((h < 20) | (h > 230)) & (s > 228)] = 255
         #num = len(np.where(mask==255))
         num = np.where(mask==255)
         if len(num[0]) > 0:
