@@ -8,7 +8,7 @@ def capture_camera(mirror=True, size=None):
 
     while True:
         # retは画像を取得成功フラグ
-        ret, frame = cap.read()
+        end_flag, frame = cap.read()
 
         # 鏡のように映るか否か
         if mirror is True:
@@ -16,6 +16,8 @@ def capture_camera(mirror=True, size=None):
 
         #tsuchida add start 20180207
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
         h = hsv[:, :, 0]
         s = hsv[:, :, 1]
         mask = np.zeros(h.shape, dtype=np.uint8)
@@ -24,6 +26,7 @@ def capture_camera(mirror=True, size=None):
         #num = len(np.where(mask==255))
         num = np.where(mask==255)
         if len(num[0]) > 0:
+         cv2.rectangle(img_gray,(258,224),(475,441),(0, 0, 225),3)
          print ('赤')
         else:
          print ('not赤')
@@ -31,6 +34,8 @@ def capture_camera(mirror=True, size=None):
         #if num > 0:
         #print('num:{}'.format(num))
         #tsuchida add end 20180207
+        
+       
 
         # フレームをリサイズ
         # sizeは例えば(800, 600)
@@ -38,7 +43,7 @@ def capture_camera(mirror=True, size=None):
             frame = cv2.resize(frame, size)
 
         # フレームを表示する
-        cv2.imshow('camera capture', frame)
+        cv2.imshow('camera capture', img_gray)
 
         k = cv2.waitKey(1) # 1msec待つ
         if k == 27: # ESCキーで終了
